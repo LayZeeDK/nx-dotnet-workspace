@@ -1,7 +1,20 @@
 {
   "version": 2,
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nx-dotnet/core"
+  },
+  "generators": {
+    "@nx-dotnet/core:app": {
+      "language": "C#",
+      "tags": "type:api",
+      "template": "webapi",
+      "testTemplate": "xunit"
+    },
+    "@nx-dotnet/core:lib": {
+      "language": "C#",
+      "template": "classlib",
+      "testTemplate": "xunit"
+    }
   },
   "projects": {}
 }
