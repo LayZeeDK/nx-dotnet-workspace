@@ -1,4 +1,4 @@
-name: "Build"
+name: 'Build'
 
 on:
   push:
@@ -15,11 +15,11 @@ on:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
-      
+
 jobs:
   build:
     if: github.event_name == 'push' && contains(toJson(github.event.commits), '***NO_CI***') == false && contains(toJson(github.event.commits), '[ci skip]') == false && contains(toJson(github.event.commits), '[skip ci]') == false
-    name: Build 
+    name: Build
     runs-on: ubuntu-latest
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -30,18 +30,24 @@ jobs:
       DOTNET_MULTILEVEL_LOOKUP: 0
 
     steps:
-    - uses: actions/checkout@v2
-      
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
+      - uses: actions/checkout@v2
 
-    - name: Restore
-      run: dotnet restore
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
 
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install PNPM
+        run: npm install --global pnpm
+      - name: Install Nx dependencies
+        run: pnpm install
 
-    - name: Test
-      run: dotnet test
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: pnpm test
