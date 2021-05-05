@@ -1,8 +1,6 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nx-dotnet/core"
-  },
+  "cli": { "defaultCollection": "@nx-dotnet/core" },
   "generators": {
     "@nx-dotnet/core:app": {
       "language": "C#",
@@ -16,5 +14,44 @@
       "testTemplate": "xunit"
     }
   },
-  "projects": {}
+  "projects": {
+    "weather-api": {
+      "root": "apps/weather-api",
+      "projectType": "application",
+      "sourceRoot": "apps/weather-api",
+      "targets": {
+        "build": {
+          "executor": "@nx-dotnet/core:build",
+          "outputs": ["{options.output}"],
+          "options": {
+            "output": "dist/apps/weather-api",
+            "configuration": "Debug"
+          },
+          "configurations": { "production": { "configuration": "Release" } }
+        },
+        "serve": {
+          "executor": "@nx-dotnet/core:serve",
+          "options": { "configuration": "Debug" },
+          "configurations": { "production": { "configuration": "Release" } }
+        }
+      }
+    },
+    "weather-api-test": {
+      "root": "apps/weather-api-test",
+      "projectType": "application",
+      "sourceRoot": "apps/weather-api-test",
+      "targets": {
+        "build": {
+          "executor": "@nx-dotnet/core:build",
+          "outputs": ["{options.output}"],
+          "options": {
+            "output": "dist/apps/weather-api-test",
+            "configuration": "Debug"
+          },
+          "configurations": { "production": { "configuration": "Release" } }
+        },
+        "test": { "executor": "@nx-dotnet/core:test", "options": {} }
+      }
+    }
+  }
 }
